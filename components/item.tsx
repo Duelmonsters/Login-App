@@ -1,12 +1,17 @@
-import React, { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
+interface Tarefa {
+  id: string;
+  titulo: string;
+}
 
 interface Props {
-  data: { titulo: string }[];
-  onEdit: () => void;
-  onDelete: () => void;
+  data: Tarefa[];
+  onEdit: (tarefa: Tarefa) => void;
+  onDelete: (tarefa: Tarefa) => void;
 }
 
 const Item = ({ data, onEdit, onDelete }: Props) => {
@@ -14,15 +19,15 @@ const Item = ({ data, onEdit, onDelete }: Props) => {
     <View>
       <FlatList
         data={data}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.itemText}>{item.titulo}</Text>
             <View style={styles.buttonGroup}>
-              <TouchableOpacity onPress={onEdit} style={styles.button}>
+              <TouchableOpacity onPress={() => onEdit(item)} style={styles.button}>
                 <Entypo name="edit" size={24} color="#4A6FA5" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={onDelete} style={styles.button}>
+              <TouchableOpacity onPress={() => onDelete(item)} style={styles.button}>
                 <AntDesign name="delete" size={24} color="#E74C3C" />
               </TouchableOpacity>
             </View>
@@ -40,10 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#F8F9FA',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
@@ -62,10 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
